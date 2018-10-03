@@ -81,11 +81,11 @@ class ProcessControl {
             }while(i < 9)
         }
         def breakCommand() : Unit = {
-            var loop = new Breaks
+            var loop = new Breaks()
             loop.breakable{
                 for(i <- 1 to 10) {
                     if (i == 5) {
-                        loop.break
+                        loop.break()
                     }
                 }
             }
@@ -100,6 +100,71 @@ class ProcessControl {
                     }
                     print(i)
                 }
+            }
+        }
+    }
+    class PatternMatching {
+        def simplePatternMatching(): Unit = {
+            var s : String = "2"
+            s match {
+                case "1" => "one"
+                case "2" => "two"
+                //missing match
+                case _ => "NotFound"
+            }
+        }
+        def caseClass(): Unit = {
+            val alice = new Person("Alice", 25)
+            val bob = new Person("Bob", 32)
+            val charlie = new Person("Charlie", 32)
+
+            for (person <- List(alice, bob, charlie)) {
+                person match {
+                    case Person("Alice", 25) => println("Hi Alice!")
+                    case Person("Bob", 32) => println("Hi Bob!")
+                    case Person(name, age) =>
+                        println("Age: " + age + " year, name: " + name + "?")
+                }
+            }
+            case class Person(name : String, age : Int)
+        }
+        def caseClassWithGuard(): Unit = {
+            abstract class Notification
+
+            case class Email(sender: String, title: String, body: String) extends Notification
+
+            case class SMS(caller: String, message: String) extends Notification
+
+            case class VoiceRecording(contactName: String, link: String) extends Notification
+
+            def showImportantNotification(notification: Notification, importantPeopleInfo: Seq[String]): String = {
+                notification match {
+                    case Email(email, _, _) if importantPeopleInfo.contains(email) =>
+                        "You got an email from special someone!"
+                    case SMS(number, _) if importantPeopleInfo.contains(number) =>
+                        "You got an SMS from special someone!"
+                    case other =>
+                        "" // nothing special, delegate to our original showNotification function
+                }
+            }
+            val importantPeopleInfo = Seq("867-5309", "jenny@gmail.com")
+            val someSms = SMS("867-5309", "Are you there?")
+            val someVoiceRecording = VoiceRecording("Tom", "voicerecording.org/id/123")
+            val importantEmail = Email("jenny@gmail.com", "Drinks tonight?", "I'm free after 5!")
+            val importantSms = SMS("867-5309", "I'm here! Where are you?")
+        }
+        def matchingTypeOnly(): Unit = {
+            abstract class Device
+            case class Phone(model: String) extends Device{
+                def screenOff = "Turning screen off"
+            }
+            case class Computer(model: String) extends Device {
+                def screenSaverOn = "Turning screen saver on..."
+            }
+
+            def goIdle(device: Device) = device match {
+                case p: Phone => p.screenOff
+                case c: Computer => c.screenSaverOn
             }
         }
     }

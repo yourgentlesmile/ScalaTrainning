@@ -23,8 +23,9 @@ class CollectionStructure {
     def TupleCommand() : Unit = {
         var x = (1,"2")
     }
-    def SomeCommand() : Unit = {
-        val x:Option[Int] = Some(5)
+    def OptionCommand() : Unit = {
+        val x : Option[Int] = Some(5)
+        val t : Option[Int] = None
     }
     def IteratorCommand() : Unit = {
         val it = Iterator(1,2,3,4,5)
@@ -33,7 +34,9 @@ class CollectionStructure {
         }
         //get max in this collection
         it.max
-        //min
+        //get min in this collection
         it.min
+        //get num of the element in the collection
+        it.size; it.length
     }
 }
