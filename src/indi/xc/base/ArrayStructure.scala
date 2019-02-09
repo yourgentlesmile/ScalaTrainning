@@ -10,9 +10,9 @@ import Array._
 class ArrayStructure {
     def ArrayCommand() : Unit = {
         /**
-          * _ means that this Array can accept any type value
+          * create an Int array
           */
-        var s : Array[_] = new Array[_](10)
+        var s : Array[Int] = new Array[Int](10)
     }
     def multiDemensionArray() : Unit = {
         /**
